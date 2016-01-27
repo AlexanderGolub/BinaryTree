@@ -1,7 +1,5 @@
 'use strict';
 
-var elements_count = 0;
-
 class BinaryTree {
 	constructor() {
 		this.root = null;
