@@ -6,101 +6,88 @@ class BinaryTree {
 	}
 
 	insert(data) {
-		if(this.root == null)
-			this.root = new Node(data);
-		else
-			this.place_node(this.root, data);
+		if (!this.root) this.root = new Node(data);
+		else this.placeNode(this.root, data);
 	}
 
-	place_node(element, data) {
-		var dir = (data < element.data) ? 'left' : 'right';
-		if(element[dir] == null)
-			element[dir] = new Node(data);
-		else
-			this.place_node(element[dir], data);
+	placeNode(element, data) {
+		var dir = data < element.data ? 'left' : 'right';
+		if (!element[dir]) element[dir] = new Node(data);
+		else this.placeNode(element[dir], data);
 	}
 
 	contains(data) {
 		var iter = this.root;
-		while(1) {
-			if(iter == null)
-				return false;
-			if(iter.data == data)
-				return true;
-			else
-				iter = (data < iter.data) ? iter.left : iter.right;
+		while (1) {
+			if (!iter) return false;
+			if (iter.data === data) return true;
+			else iter = data < iter.data ? iter.left : iter.right;
 		}
 	}
 
 	remove(data) {
 		var iter = this.root;
-		var prev_node = null;
-		while(1) {
-			if(iter == null)
-				return;
-			if(iter.data == data) {
-				if(iter == this.root) {
-					this.remove_root();
+		var prevNode = null;
+		while (1) {
+			if (!iter) return;
+			if (iter.data === data) {
+				if (iter === this.root) {
+					this.removeRoot();
 					return;
 				}
-				var dir = (prev_node.data > iter.data) ? 'left' : 'right';
-				this.remove_node(prev_node, dir, iter);
+				var dir = prevNode.data > iter.data ? 'left' : 'right';
+				this.removeNode(prevNode, dir, iter);
 				return;
 			}
 			else {
-				prev_node = iter;
-				iter = (data < iter.data) ? iter.left : iter.right;
+				prevNode = iter;
+				iter = data < iter.data ? iter.left : iter.right;
 			}
 		}
 	}
 
-	remove_root() {
-		var iter_right = this.root.right;
-		if(iter_right == null) {
+	removeRoot() {
+		var iterRight = this.root.right;
+		if (!iterRight) {
 			this.root = this.root.left;
 			return;
 		}
 		else {
-			while(iter_right.left != null)
-				iter_right = iter_right.left;
-			iter_right.left = this.root.left;
-			this.root = iter_right;
+			while (iterRight.left) iterRight = iterRight.left;
+			iterRight.left = this.root.left;
+			this.root = this.root.right;
 			return;
 		}
 	}
 
-	remove_node(prev_node, dir, node) {
-		var iter_right = node.right;
-		if(iter_right == null) {
-			prev_node[dir] = node.left;
+	removeNode(prevNode, dir, node) {
+		var iterRight = node.right;
+		if (!iterRight) {
+			prevNode[dir] = node.left;
 			return;
 		}
 		else {
-			while(iter_right.left != null)
-				iter_right = iter_right.left;
-			prev_node[dir] = iter_right;
-			iter_right.left = node.left;
+			while (iterRight.left) iterRight = iterRight.left;
+			prevNode[dir] = iterRight;
+			iterRight.left = node.left;
 			return;
 		}
 	}
 
 	size() {
-		this.elements_count = 0;
-		if(this.root)
-			this.recursive_size_counter(this.root);
-		return this.elements_count;
+		this.elemetsNum = 0;
+		if (this.root) this.sizeCounter(this.root);
+		return this.elemetsNum;
 	}
 
-	recursive_size_counter(element){
-		this.elements_count++;
-		if(element.right)
-			this.recursive_size_counter(element.right);
-		if(element.left)
-			this.recursive_size_counter(element.left);
+	sizeCounter(element){
+		this.elemetsNum++;
+		if (element.right) this.sizeCounter(element.right);
+		if (element.left) this.sizeCounter(element.left);
 	}	
 
 	isEmpty() {
-		return (this.root == null) ? true: false;
+		return !this.root;
 	}
 }
 
